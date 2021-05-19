@@ -1,0 +1,12 @@
+{
+  "name": "animeow",
+  "displayName": "animeow",
+  "expo": {
+    "name": "animeow",
+    "slug": "animeow",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
