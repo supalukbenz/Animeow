@@ -5,7 +5,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
 import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, SafeAreaView, ImageBackground } from 'react-native';
 
-class RatingAnimeList extends Component {
+class OngoingAnime extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,10 +23,11 @@ class RatingAnimeList extends Component {
             loading: false
         })
         const res = await axios.get('https://kitsu.io/api/edge/trending/anime?page[limit]=20');        
-        const data = await res.data.data;  
-        console.log(data.length);      
+        const resData = await res.data.data;  
+        const filterData = await resData.filter(d => d.attributes.status === 'current');
+        console.log(filterData.length);      
         this.setState({
-            items: data
+            items: filterData
         })
         this.setState({
             loading: true
@@ -34,7 +35,7 @@ class RatingAnimeList extends Component {
     }
     _renderItem = ({item, index}) => {
         return (
-             <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate("ItemCard", {item: item})}>                
+             <TouchableOpacity style={styles.card}>                
                 <View style={styles.rankingView}><Text style={styles.ranking}>{index+1}</Text></View>
                 <Text style={styles.title}>{ item.attributes.titles.en }</Text>
                 <Text style={styles.year}>({ item.attributes.startDate.split("-")[0] })</Text>
@@ -62,16 +63,16 @@ class RatingAnimeList extends Component {
         let {items} = this.state
         let {loading} = this.state
         return (            
-            <ImageBackground source={require('../images/AnimeTrendingBg.png')} style={styles.backgroundImage}>
-                <SafeAreaView style={styles.container}>        
-                <Text style={styles.trendingTitle}>{ loading ? <Text>Anime Trending</Text> : null}</Text>            
+            
+              <SafeAreaView style={styles.container}>        
+                <Text style={styles.trendingTitle}>{ loading ? <Text>Top Ongoing Anime</Text> : null}</Text>            
                     <FlatList                                        
                         data={items}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={this._renderItem}
                     />
-                </SafeAreaView>
-            </ImageBackground>
+              </SafeAreaView>
+            
         );
     }
 }
@@ -79,10 +80,10 @@ class RatingAnimeList extends Component {
 const styles = StyleSheet.create({
   container: {    
     // backgroundColor: '#fff',   
-    marginTop: 180,
-    width: "100%",
-    alignItems: 'center',
-    justifyContent: 'center',   
+    // marginTop: 200,
+    // width: "100%",
+    // alignItems: 'center',
+    // justifyContent: 'center',   
   },
   backgroundImage: {
     flex: 1,
@@ -92,10 +93,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',   
   },
   trendingTitle: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 5,
-    marginBottom: 30,
+    marginTop: 50,
+    marginBottom: 10,
     color: '#414271',
   },
   rankingView: {
@@ -169,4 +170,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RatingAnimeList;
+export default OngoingAnime;

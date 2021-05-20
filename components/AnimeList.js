@@ -55,7 +55,7 @@ class AnimeList extends React.Component {
 
     render() {
       return (
-        <SafeAreaView>
+        <SafeAreaView>          
           <FlatList
             data={this.state.data}
             renderItem={item => this.renderItemComponent(item)}
